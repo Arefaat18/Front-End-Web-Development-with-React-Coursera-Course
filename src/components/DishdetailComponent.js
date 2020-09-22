@@ -3,6 +3,8 @@ import { Card, CardImg, CardText, CardBody, CardTitle,Breadcrumb,BreadcrumbItem,
 import {Link} from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Component } from 'react';
+import {Loading} from './LoadingComponent';
+
 
     function RenderDish({dish}){
             
@@ -64,7 +66,27 @@ import { Component } from 'react';
         render(){
         const dish=this.props.selectedDish;        
         console.log(dish)
-        if(this.props.dish != null){
+        if (this.props.isLoading) {
+            return (
+                <div className="container">
+                    <div className="row">
+                        <Loading />
+                    </div>
+                </div>
+            );
+        }
+
+        else if (this.props.errMess){
+            return (
+                <div className="container">
+                    <div className="row">
+                        <h4>{this.props.errMess}</h4>
+                    </div>
+                </div>
+            );
+        }
+
+        else if(this.props.dish != null){
             return (
                 <div className="container">
                     <div className="row">
