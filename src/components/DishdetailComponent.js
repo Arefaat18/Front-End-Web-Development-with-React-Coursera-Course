@@ -18,21 +18,31 @@ import { Component } from 'react';
             
         }
 
-    function RenderComments({comments}){
-        return (
-        comments.map( (comment) => {
-            return (
-                <div>
-                <li key={comment.id} className="list-unstyled">
-                    <p>{comment.comment}</p>
-                    <p>--{comment.author},{new Intl.DateTimeFormat('en-US',{year: 'numeric',month: 'short',day: '2-digit'}).format(new Date(Date.parse(comment.date)))}</p>
+    function RenderComments({comments,addComment,dishId}){
+        let list = comments.map((comments)=>{
+
+            return(
+                <li key={comments.id} >
+                    <div>
+                        <p>{comments.comment}</p>
+                        <p>--{comments.author},
+                        {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comments.date)))}</p>
+                    </div>
                 </li>
-                
 
-                </div>
-            );
-
+            )
         })
+
+        return(
+                <div>
+                    <h4>Comments</h4>
+                    <ul className="list-unstyled">
+                        {list}
+                    </ul>
+                    <CommentForm dishId={dishId} addComment={addComment}>
+
+                    </CommentForm>
+                </div>
         )
     }
 
@@ -73,8 +83,7 @@ import { Component } from 'react';
                         </div>
                         <div className="col-12 col-md-5 m-1">
                             <h4>Comments</h4>
-                            <RenderComments comments = {this.props.comments} />
-                            <CommentForm></CommentForm>
+                            <RenderComments comments = {this.props.comments}  addComment={this.props.addComment} dishId={this.props.dish.id}/>
                             
                         </div>
                     </div>
@@ -111,7 +120,8 @@ class CommentForm extends Component {
 
     handleSubmit(values) {
         console.log("Current State is: " + JSON.stringify(values));
-        alert("Current State is: " + JSON.stringify(values));
+        alert(this.props.dishId+ "Current State is: " + JSON.stringify(values));
+        this.props.addComment(this.props.dishId,values.rating,values.author,values.comment);
     }
 
     
